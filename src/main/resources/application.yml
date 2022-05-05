@@ -8,7 +8,7 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
   profiles:
-    active: pro
+    active: dev
   redis:
     host: 127.0.0.1
     port: 6379
@@ -94,7 +94,7 @@ logging:
     path: D://logs
   level:
     root: INFO
-    noob.toolbox: debug
+    noob.toolbox: INFO
 springdoc:
   swagger-ui:
     enabled: true

@@ -21,6 +21,7 @@ import java.util.Map;
 public class HttpCloudFlare {
     // 默认的请求地址
     public static final String BASE_URL = "https://api.cloudflare.com/client/v4/";
+    public static final HttpCloudFlare newInstance = new HttpCloudFlare();
 
     /**
      * API请求头 包含令牌

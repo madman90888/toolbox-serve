@@ -16,10 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisKeyExpirationListener extends KeyExpirationEventMessageListener {
     public static final String EXPIRATION_DELETE_FILE = "Expiration_delete_file:";
-    public static final String DEFILE_FILE = "Delete_file:";
-
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
     public RedisKeyExpirationListener(RedisMessageListenerContainer listenerContainer) {
         super(listenerContainer);
@@ -28,6 +24,7 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
     @Override
     protected void doHandleMessage(Message message) {
         final String msg = message.toString();
+        // 判断是文件删除 key
         if (msg.startsWith(EXPIRATION_DELETE_FILE)) {
             deleteFile(msg.replace(EXPIRATION_DELETE_FILE, ""));
         }
@@ -38,14 +35,11 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
      * @param realPath 文件路径
      */
     private void deleteFile(String realPath) {
-        System.out.println("删除文件" + realPath);
-//        final String path = (String) redisTemplate.opsForValue().get(DEFILE_FILE + id);
+        log.debug("定时删除文件：" + realPath);
         try {
             FileUtil.delFile(realPath);
         }catch (Exception e) {
             log.error("文件删除失败：", e);
-        }finally {
-//            redisTemplate.delete(DEFILE_FILE + realPath);
         }
     }
 }

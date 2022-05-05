@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import noob.toolbox.converter.DateTimeConverter;
 import noob.toolbox.converter.StatusConverter;
 
+import javax.validation.constraints.NotBlank;
+
 @Schema(name = "域名实体", description = "域名相对完整信息")
 @Data
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class Zone {
     @Schema(description = "域名ID")
     private String id;
 
+    @NotBlank(message = "域名不能为空")
     @ExcelProperty("域名")
     @ColumnWidth(25)
     @Schema(description = "名称")

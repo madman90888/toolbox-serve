@@ -30,7 +30,7 @@ public class AppStartupRunner implements ApplicationRunner {
         if (admin == null) {
             // qwe123
             redisTemplate.opsForValue().set(UserService.USER_KEY + "admin", "2aeb0fd37a8c1ba10336bc1fdcd6dc16");
-            log.debug("Redis没有初始用户，自动添加admin用户");
+            log.error("Redis没有初始用户，自动添加admin用户");
         }
         // 文件夹是否存在
         if (logFile != null) {

@@ -2,9 +2,11 @@ package noob.toolbox.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import noob.toolbox.cloudflare.FlareErrorCode;
 import noob.toolbox.domain.pojo.ResultRow;
 import noob.toolbox.exception.CustomerException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.util.ObjectUtils;
 
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Data
 public class FlareData {
     private boolean success;
@@ -47,6 +50,7 @@ public class FlareData {
         if (ObjectUtils.isEmpty(errors)) {
             return "错误消息为空";
         }
+        log.debug("错误消息：" + errors);
         StringBuffer buffer = new StringBuffer();
         errors.stream().forEach(info -> {
             buffer.append(FlareErrorCode.getMsg(info.getCode(), info.getMessage()))

@@ -1,5 +1,6 @@
 package noob.toolbox.cloudflare;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
@@ -58,6 +59,9 @@ public class FlareErrorCode {
         map.put(9002, "DNS 记录类型无效");
         map.put(6003, "令牌无效");
         map.put(81057, "记录已经存在");
+        map.put(9109, "令牌没有该操作的权限");
+        map.put(0, "令牌没有增加域名权限");
+        map.put(9007, "CNAME 记录的内容无效");
     }
 
     /**
@@ -69,6 +73,10 @@ public class FlareErrorCode {
     public static String getMsg(Integer code, String defaultMsg) {
         if (ObjectUtils.isEmpty(code) || ObjectUtils.isEmpty(map.get(code))) {
             return defaultMsg;
+        }
+        // 是令牌权限不足，则相应 403 状态码
+        if (code == 9109 || code == 0 || code == 6003) {
+            throw new AccessDeniedException(map.get(code));
         }
         return map.get(code);
     }

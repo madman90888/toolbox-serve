@@ -41,11 +41,11 @@ public class HttpClientUtils {
     // 编码格式
     public static final String ENCODING = "UTF-8";
     // 使用连接池来管理连接,从连接池获取连接的超时时间
-    public static final int REQUEST_TIMEOUT = 6000;
+    public static final int REQUEST_TIMEOUT = 9000;
     // 连接超时,连接建立时间,三次握手完成时间，单位毫秒
-    public static final int CONNECT_TIMEOUT = 6000;
+    public static final int CONNECT_TIMEOUT = 9000;
     // 请求超时,数据传输过程中数据包之间间隔的最大时间
-    public static final int SOCKET_TIMEOUT = 6000;
+    public static final int SOCKET_TIMEOUT = 9000;
     // 全局连接池对象
     private static final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
 
@@ -58,7 +58,7 @@ public class HttpClientUtils {
         /**
          * 设置每个连接的路由数
          * 路由是指 IP + Port 或指域名
-         * 如果使用域名来访问，则每个域名有字节的连接池
+         * 如果使用域名来访问，则每个域名有自己的连接池
          * 如果使用 IP + Port，则每个 IP + Port 有自己的连接池
          */
         connManager.setDefaultMaxPerRoute(20);

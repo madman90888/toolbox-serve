@@ -1,17 +1,17 @@
 package noob.toolbox.handler;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import noob.toolbox.domain.pojo.BusinessCode;
 import noob.toolbox.domain.pojo.ResultData;
 import noob.toolbox.exception.CustomerException;
+import noob.toolbox.service.CloudFlareService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @Autowired
+    private CloudFlareService service;
 
     @ExceptionHandler(CustomerException.class)
     public ResultData exception(CustomerException e) {
@@ -36,6 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResultData exception(AccessDeniedException e) {
         log.debug("权限不足：", e);
+        service.deleteToken();
         return ResultData.error(BusinessCode.NOT_AUTH_USER.getCode(), BusinessCode.NOT_AUTH_USER.getMessage());
     }
 
