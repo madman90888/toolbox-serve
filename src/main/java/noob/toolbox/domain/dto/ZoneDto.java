@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class ZoneDto {
 
     @NotEmpty(message = "域名禁止为空")
-    @Schema(name = "name", description = "域名列表数组", example = "name1.com", required = true)
+    @Schema(name = "name", description = "域名", example = "name1.com", required = true)
     private String name;
 
     @Pattern(regexp = "^(off|flexible|full|strict)$", message = "无效级别")

@@ -94,7 +94,7 @@ logging:
     path: D://logs
   level:
     root: INFO
-    noob.toolbox: INFO
+    noob.toolbox: debug
 springdoc:
   swagger-ui:
     enabled: true

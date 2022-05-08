@@ -94,7 +94,15 @@ public class CloudFlareController {
         return ZoneVo.of(name, service.deleteZoneByName(name)) ;
     }
 
-    @Operation(summary = "是否自动跳转HTTPS")
+    @Operation(summary = "自动 HTTPS 重写状态")
+    @Parameter(name = "name", description = "获取当前状态", example = "name.com")
+    @GetMapping("zones/auto_https")
+    public ZoneVo getAutoHttps(@NotBlank(message = "域名不能为空") String name) {
+        final ResultRow resultRow = service.getAutomaticRewritesHttps(service.getZone(name).getId());
+        return ZoneVo.of(name, resultRow);
+    }
+
+    @Operation(summary = "设置自动 HTTPS 重写")
     @Parameter(name = "value", description = "是否启用该功能该功能", example = "on|off")
     @PatchMapping("zones/auto_https")
     public ZoneVo updateAutoHttps(@RequestBody @Validated(HTTPS.class) ZoneDto zoneDto) {
@@ -102,12 +110,28 @@ public class CloudFlareController {
         return ZoneVo.of(zoneDto.getName(), resultRow);
     }
 
-    @Operation(summary = "是否始终使用HTTPS")
+    @Operation(summary = "始终使用 HTTPS状态")
+    @Parameter(name = "name", description = "获取当前状态", example = "name.com")
+    @GetMapping("zones/always_use_https")
+    public ZoneVo getAlwaysUseHttps(@NotBlank(message = "域名不能为空") String name) {
+        final ResultRow resultRow = service.getAlwaysUseHttps(service.getZone(name).getId());
+        return ZoneVo.of(name, resultRow);
+    }
+
+    @Operation(summary = "设置始终使用 HTTPS")
     @Parameter(name = "value", description = "是否启用该功能该功能", example = "on|off")
     @PatchMapping("zones/always_use_https")
     public ZoneVo updateAlwaysUseHttps(@RequestBody @Validated(HTTPS.class) ZoneDto zoneDto) {
         final ResultRow resultRow = service.alwaysUseHttps(service.getZone(zoneDto.getName()).getId(), zoneDto.getValue());
         return ZoneVo.of(zoneDto.getName(), resultRow);
+    }
+
+    @Operation(summary = "获取当前 SSL/TLS 模式")
+    @Parameter(name = "name", description = "获取当前模式", example = "name.com")
+    @GetMapping("zones/ssl")
+    public ZoneVo getSSL(@NotBlank(message = "域名不能为空") String name) {
+        final ResultRow resultRow = service.getSSL(service.getZone(name).getId());
+        return ZoneVo.of(name, resultRow);
     }
 
     @Operation(summary = "更改 SSL/TLS 模式")

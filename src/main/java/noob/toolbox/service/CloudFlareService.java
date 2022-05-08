@@ -293,9 +293,14 @@ public class CloudFlareService {
      * @param zoneId    区域ID
      * @return
      */
-    public Map getAlwaysUseHttps(String zoneId) {
+    public ResultRow getAlwaysUseHttps(String zoneId) {
         final FlareData flareData = sendHttp().get("/zones/" + zoneId + "/settings/always_use_https", getToken(), null);
-        return flareData.getResultMap();
+        final ResultRow result = flareData.getResult();
+        if (result.isSuccess()) {
+            final Map map = flareData.getResultMap();
+            result.setMessage("on".equals(map.get("value")) ? "开启" : "关闭");
+        }
+        return result;
     }
 
     /**
@@ -319,8 +324,14 @@ public class CloudFlareService {
      * @param zoneId    区域ID
      * @return
      */
-    public Map getAutomaticRewritesHttps(String zoneId) {
-        return sendHttp().get("/zones/" + zoneId + "/settings/automatic_https_rewrites", getToken(),null).getResultMap();
+    public ResultRow getAutomaticRewritesHttps(String zoneId) {
+        final FlareData flareData = sendHttp().get("/zones/" + zoneId + "/settings/automatic_https_rewrites", getToken(), null);
+        final ResultRow result = flareData.getResult();
+        if (result.isSuccess()) {
+            final Map map = flareData.getResultMap();
+            result.setMessage("on".equals(map.get("value")) ? "开启" : "关闭");
+        }
+        return result;
     }
 
     /**
@@ -345,8 +356,14 @@ public class CloudFlareService {
      * @param zoneId    区域ID
      * @return
      */
-    public Map getSSL(String zoneId) {
-        return sendHttp().get("/zones/" + zoneId + "/settings/ssl", getToken(), null).getResultMap();
+    public ResultRow getSSL(String zoneId) {
+        final FlareData flareData = sendHttp().get("/zones/" + zoneId + "/settings/ssl", getToken(), null);
+        final ResultRow result = flareData.getResult();
+        if (result.isSuccess()) {
+            final Map map = flareData.getResultMap();
+            result.setMessage((String) map.get("value"));
+        }
+        return result;
     }
 
     /**************** DNS操作 *********************/
