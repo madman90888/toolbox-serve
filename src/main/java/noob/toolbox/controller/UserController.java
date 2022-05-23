@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import noob.toolbox.domain.pojo.BusinessCode;
 import noob.toolbox.domain.pojo.ResultData;
-import noob.toolbox.service.UserService;
+import noob.toolbox.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;

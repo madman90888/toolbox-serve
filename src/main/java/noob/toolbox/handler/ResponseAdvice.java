@@ -32,7 +32,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         }
         // 参数是字符串类型，因 MVC 字符串类型是直接返回，需要额外进行包装
         if (body instanceof String) {
-            return mapper.writeValueAsString(ResultData.message((String) body));
+            return mapper.writeValueAsString(ResultData.success((String) body));
         }
         // 其他类型统一返回格式
         return ResultData.success(body);

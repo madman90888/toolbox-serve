@@ -1,5 +1,4 @@
 server:
-  port: 7788
   servlet:
     session:
       timeout: 30m
@@ -8,7 +7,11 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
   profiles:
-    active: dev
+    active: pro
+    # 数据库连接信息
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/promote?characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai
   redis:
     host: 127.0.0.1
     port: 6379
@@ -57,6 +60,20 @@ spring:
       allow_single_quotes: true
       # 允许出现特殊字符和转义符
       allow_unquoted_control_chars: true
+mybatis-plus:
+  # 指定 mapper xml文件的位置
+  mapper-locations: classpath:mapper/*.xml
+  # 扫描实体包，生成别名
+  type-aliases-package: noob.toolbox.domain.entity
+  configuration:
+    # 开启下划线转驼峰
+    map-underscore-to-camel-case: true
+    # 日志，显示执行SQL
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # ID自增策略
+      id-type: auto
 logging:
   charset:
     console: UTF-8
@@ -65,9 +82,9 @@ logging:
     rollingpolicy:
       clean-history-on-start: false
       file-name-pattern: ${LOG_FILE}.%d{yyyy-MM}.%i.gz
-      max-file-size: 10MB
+      max-file-size: 5MB
       max-history: 7
-      total-size-cap: 100MB
+      total-size-cap: 50MB
 springdoc:
   swagger-ui:
     # 修改Swagger UI路径
@@ -84,17 +101,27 @@ springdoc:
   packages-to-scan: noob.toolbox.controller
 ---
 customer:
-  file-save-path: D:\logs\
+  file-save-path: D:\var\file\
+  page-path: D:\var\html\
+  fake-page: D:\var\fake\
+server:
+  port: 7788
 spring:
   config:
     activate:
       on-profile: dev
+  datasource:
+    username: root
+    password: 123456
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   file:
-    path: D://logs
+    path: D:/var/log
   level:
     root: INFO
-    noob.toolbox: debug
+    noob.toolbox: DEBUG
 springdoc:
   swagger-ui:
     enabled: true
@@ -103,16 +130,23 @@ springdoc:
 ---
 customer:
   file-save-path: /var/file/
+  page-path: /data/html/
+  fake-page: /data/fake/
+server:
+  port: 80
 spring:
   config:
     activate:
       on-profile: pro
+  datasource:
+    username: promote
+    password: Azfh3rjBJHFpGdPS
 logging:
   file:
     path: /var/log/spring
   level:
-    root: INFO
-    noob.toolbox: debug
+    root: ERROR
+    noob.toolbox: ERROR
 springdoc:
   swagger-ui:
     enabled: false

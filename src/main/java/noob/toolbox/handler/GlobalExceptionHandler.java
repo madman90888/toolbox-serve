@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import noob.toolbox.domain.pojo.BusinessCode;
 import noob.toolbox.domain.pojo.ResultData;
 import noob.toolbox.exception.CustomerException;
-import noob.toolbox.service.CloudFlareService;
+import noob.toolbox.service.impl.CloudFlareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
     // Form、JSON 校验失败抛出的异常
     @ExceptionHandler(BindException.class)
     public ResultData exception(BindException e) {
-        log.debug("form参数错误：", e);
+        log.debug("Form、JSON参数错误：", e);
         List<FieldError> errors = e.getBindingResult().getFieldErrors();
         final ResultData resultData = ResultData.error(errors.get(0).getDefaultMessage());
         List<String> collect = errors.stream()
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResultData exception(RuntimeException e) {
         log.debug("手动抛出运行时异常：", e);
-        return ResultData.error(e.getMessage());
+        return ResultData.error("请求出现异常");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)

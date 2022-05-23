@@ -16,7 +16,7 @@ import noob.toolbox.domain.vo.DnsVo;
 import noob.toolbox.domain.vo.PageInfo;
 import noob.toolbox.domain.vo.ZoneVo;
 import noob.toolbox.resolver.annotation.JsonParam;
-import noob.toolbox.service.CloudFlareService;
+import noob.toolbox.service.impl.CloudFlareService;
 import noob.toolbox.util.AESCrypt;
 import noob.toolbox.validated.HTTPS;
 import org.springframework.beans.BeanUtils;

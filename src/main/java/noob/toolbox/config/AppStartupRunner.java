@@ -1,7 +1,9 @@
 package noob.toolbox.config;
 
 import lombok.extern.slf4j.Slf4j;
-import noob.toolbox.service.UserService;
+import noob.toolbox.controller.IndexController;
+import noob.toolbox.domain.pojo.Denied;
+import noob.toolbox.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -10,6 +12,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -22,6 +27,9 @@ public class AppStartupRunner implements ApplicationRunner {
 
     @Value("${customer.file-save-path}")
     private String fileSavePath;
+
+    @Value("${customer.fake-page}")
+    private String fakePagePath;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -45,6 +53,31 @@ public class AppStartupRunner implements ApplicationRunner {
             if (!file.exists()) {
                 file.mkdirs();
                 log.error("上传文件存放目录不存在，自动创建：" + fileSavePath);
+            }
+        }
+        final Denied denied = (Denied) redisTemplate.opsForValue().get(IndexController.INDEX_ACCESS);
+        if (Objects.isNull(denied)) {
+            final Denied d = new Denied();
+            d.setUse(false);
+            final List<String> list = new ArrayList<>();
+            list.add("Java");
+            list.add("BIZCO");
+            list.add("wget");
+            list.add("curl");
+            list.add("libcurl");
+            list.add("python");
+            list.add("CheckMarkNetwork");
+            list.add("facebookexternalhit");
+            d.setFilter(list);
+            d.setType(1);
+            redisTemplate.opsForValue().set(IndexController.INDEX_ACCESS, d);
+        }
+
+        if (fakePagePath != null) {
+            final File file = new File(fakePagePath);
+            if (!file.exists()) {
+                file.mkdirs();
+                log.error("存放虚假的html文件夹不存在，自动创建：" + fakePagePath);
             }
         }
     }

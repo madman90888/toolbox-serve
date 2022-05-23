@@ -74,4 +74,21 @@ public class WebUtils {
         }
         return ipAddress;
     }
+
+    /**
+     * 获取顶级域名
+     * @param domain
+     * @return
+     */
+    public static String topLevelDomain(String domain) {
+        if (ObjectUtils.isEmpty(domain)) {
+            return "";
+        }
+        domain = domain.replaceAll("^(https?://)?(.+)(:\\d+/?)$", "$2");
+        String m = domain;
+        if (domain.length() - m.replaceAll(".", "").length() > 1) {
+            domain = domain.replaceAll("(^.+\\.)(?=\\w+\\.\\w+$)", "");
+        }
+        return domain;
+    }
 }

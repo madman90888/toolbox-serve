@@ -1,4 +1,4 @@
-package noob.toolbox.service;
+package noob.toolbox.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

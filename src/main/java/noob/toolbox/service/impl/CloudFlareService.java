@@ -1,4 +1,4 @@
-package noob.toolbox.service;
+package noob.toolbox.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import noob.toolbox.cloudflare.HttpCloudFlare;

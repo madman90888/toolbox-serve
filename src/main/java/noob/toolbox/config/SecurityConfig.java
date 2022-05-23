@@ -15,9 +15,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -34,8 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()    // 设置路径访问权限
                 // 公共方法，所有人都能访问
-                .antMatchers("/", "/msg/**", "/currUser",
-                        "/index.html", "/favicon.ico", "/css/**", "/js/**", "/img/**",
+                .antMatchers(
+                        "/s/**", "/code",
+                        "/msg/**",  "/p/**",
+                        "/", "/admin", "/currUser", "/favicon.ico",
+                        "/css/**", "/js/**", "/img/**",
                         "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 // 匿名访问，未登录的时候
                 .antMatchers("/login").anonymous()
@@ -88,8 +93,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 返回用户未登录提示的
      * 实现AuthenticationEntryPoint接口,的commence方法
      */
-    void notUser(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-        WebUtils.writeString(401, "未登录", response);
+    void notUser(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        final String accept = request.getHeader("accept");
+        if (!ObjectUtils.isEmpty(accept) && accept.indexOf("html") > -1) {
+            response.sendRedirect("/");
+        }else {
+            WebUtils.writeString(401, "未登录", response);
+        }
     }
 
     /**
